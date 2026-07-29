@@ -1,2 +1,7 @@
-# detection-and-response-lab
-Blue-team home lab: hardening of a Linux server with Ansible, attacking it froma Kali machine, detecting it with Wazuh (SIEM)
+# Detection & Response Lab
+Blue-team home lab: harden a Linux server with Ansible, attack it from a Kali machine, detect it with Wazuh (SIEM).
+
+## Architecture
+_TBD
+
+
