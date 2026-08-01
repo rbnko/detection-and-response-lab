@@ -20,5 +20,5 @@ Running log of what I did, what broke, and how I fixed it.
 - Created Debian 13.6 VM 'ansible'.
 
 ## 2026-07-31
-- por alguna razon passwdless no funciona?? fixear mas tarde, usuario ansible aislado (suoders file)
+- FIX PASSWDLESS ANSIBLE USER AFTERWARDS (FOR NOW USE -K)
 - First hardening control: root SSH login fully disabled.
