@@ -7,13 +7,18 @@ Running log of what I did, what broke, and how I fixed it.
 - Created isolated bridge 'vmbr1' for the VM's of the lab.
 
 ## 2026-07-24
-- Created 24.04 Ubuntu Server VM for wazuh.
+- Created Ubuntu Server 24.04 VM for wazuh.
 
 ## 2026-07-29
 - Deployed Wazuh (indexer + manager + dashboard) on 24.04 Ubuntu Server VM.
 - Created static route to reach the Wazuh dashboard from desktop PC via the Proxmox host, bridging both networks.
-- Created 24.04 Ubuntu Server VM 'deb-target'.
+- Created Debian 13.6 VM 'deb-target'.
 
 ## 2026-07-30
 - Installed Wazuh agent on 'deb-target'.
 - Security Configuration Assessment for 'deb-target' scores 42% before hardening (baseline reference).
+- Created Debian 13.6 VM 'ansible'.
+
+## 2026-07-31
+- por alguna razon passwdless no funciona?? fixear mas tarde, usuario ansible aislado (suoders file)
+- First hardening control: root SSH login fully disabled.
