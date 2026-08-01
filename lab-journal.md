@@ -20,5 +20,14 @@ Running log of what I did, what broke, and how I fixed it.
 - Created Debian 13.6 VM 'ansible'.
 
 ## 2026-07-31
-- FIX PASSWDLESS ANSIBLE USER AFTERWARDS (FOR NOW USE -K)
+- **FIX PASSWDLESS ANSIBLE USER AFTERWARDS (FOR NOW USE -K)**
 - First hardening control: root SSH login fully disabled.
+
+## 2026-07-31
+- Added CIS-aligned controls: SSH timeouts (ClientAlive*), MaxAuthTries,
+  empty-password block, UFW enabled-on-boot, fail2ban, telnet removal,
+  clean MOTD, login banner (/etc/issue.net).
+- SCA score moved from 42% to 43%.
+**Takeaway:** Learned to use Ansible to remediate the configuration weaknesses
+surface by Wazuh's SCA, closing the loop between detection and remediation.
+Key concepts acquired: idempotency, configuration-as-code.
