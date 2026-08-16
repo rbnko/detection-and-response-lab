@@ -1,0 +1,26 @@
+# Lynis Report
+report_version_major=1
+report_version_minor=0
+report_datetime_start=2026-08-02 17:22:13
+auditor=[Not Specified]
+lynis_version=3.1.4
+os=Linux
+os_name=Debian
+os_fullname=Debian GNU/Linux 13 (trixie)
+os_version=13
+linux_version=Debian
+os_kernel_version=6.12.100+deb13
+os_kernel_version_full=6.12.100+deb13-amd64
+hostname=deb-target
+test_category=all
+test_group=all
+plugin_directory=/etc/lynis/plugins
+lynis_update_available=0
+suggestion[]=LYNIS|This release is more than 4 months old. Check the website or GitHub to see if there is an update available.|-|-|
+vm=1
+vmtype=kvm
+container=0
+notebook=0
+systemd=1
+hostid=98ce4dcf59c1f610a4bf070ff69bb5c63c9eb196
+hostid2=bde3f1526fb45fc1c7dd064236152c5015f268545d5c641e084a3fbacfb3ba79

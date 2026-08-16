@@ -31,3 +31,8 @@ Running log of what I did, what broke, and how I fixed it.
 **Takeaway:** Learned to use Ansible to remediate the configuration weaknesses
 surface by Wazuh's SCA, closing the loop between detection and remediation.
 Key concepts acquired: idempotency, configuration-as-code.
+
+## 2026-08-01
+- Hardened the Debian target VM with help of Lynis.
+- Audited the system with Lynis, checking the hardening index and the suggestions provided, mapping the most relevant ones and applying them.
+- Hardening Index BEFORE / AFTER: 68% / 77%
