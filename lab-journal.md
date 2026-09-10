@@ -36,3 +36,12 @@ Key concepts acquired: idempotency, configuration-as-code.
 - Hardened the Debian target VM with help of Lynis.
 - Audited the system with Lynis, checking the hardening index and the suggestions provided, mapping the most relevant ones and applying them.
 - Hardening Index BEFORE / AFTER: 68% / 77%
+
+## 2026-09-05
+- Launched a SSH brute-force attack from a Kali machine against the hardened Debian target.
+- Ran Hydra from Kali against the Debian machine with a small set of custom wordlists.
+- fail2ban (which was applied during the hardening via Ansible playbook) detected the authentication attempts and banned the Kali machine IP.
+- tcpdump on Debian captured 821 packets (check .pcap)
+- From Wazuh Threat Intelligence, 38 authentication failures were registered.
+- Key alert: rule.id 5551, level 10, "PAM: Multiple failed logins in a small period of time" (21:44:23).
+
