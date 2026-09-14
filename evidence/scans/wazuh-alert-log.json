@@ -1,0 +1,93 @@
+{
+  "_index": "wazuh-alerts-4.x-2026.09.05",
+  "_id": "jTkZc6ABJt_Dz11S0xCa",
+  "_score": 1,
+  "_source": {
+    "predecoder": {
+      "hostname": "deb-target",
+      "program_name": "sshd-session",
+      "timestamp": "Sep 05 19:44:21"
+    },
+    "agent": {
+      "ip": "10.10.10.20",
+      "name": "deb-target",
+      "id": "001"
+    },
+    "manager": {
+      "name": "wazuh"
+    },
+    "data": {
+      "uid": "0",
+      "srcip": "10.10.10.30",
+      "euid": "0",
+      "dstuser": "root",
+      "tty": "ssh"
+    },
+    "rule": {
+      "mail": false,
+      "level": 5,
+      "pci_dss": [
+        "10.2.4",
+        "10.2.5"
+      ],
+      "hipaa": [
+        "164.312.b"
+      ],
+      "tsc": [
+        "CC6.1",
+        "CC6.8",
+        "CC7.2",
+        "CC7.3"
+      ],
+      "description": "PAM: User login failed.",
+      "groups": [
+        "pam",
+        "syslog",
+        "authentication_failed"
+      ],
+      "nist_800_53": [
+        "AU.14",
+        "AC.7"
+      ],
+      "gdpr": [
+        "IV_35.7.d",
+        "IV_32.2"
+      ],
+      "firedtimes": 11,
+      "mitre": {
+        "technique": [
+          "Password Guessing"
+        ],
+        "id": [
+          "T1110.001"
+        ],
+        "tactic": [
+          "Credential Access"
+        ]
+      },
+      "id": "5503",
+      "gpg13": [
+        "7.8"
+      ]
+    },
+    "decoder": {
+      "name": "pam"
+    },
+    "full_log": "Sep 05 19:44:21 deb-target sshd-session[2386]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=10.10.10.30  user=root",
+    "input": {
+      "type": "log"
+    },
+    "@timestamp": "2026-09-05T19:44:23.587Z",
+    "location": "journald",
+    "id": "1788637463.69173",
+    "timestamp": "2026-09-05T19:44:23.587+0000"
+  },
+  "fields": {
+    "timestamp": [
+      "2026-09-05T19:44:23.587Z"
+    ],
+    "@timestamp": [
+      "2026-09-05T19:44:23.587Z"
+    ]
+  }
+}

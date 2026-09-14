@@ -45,3 +45,13 @@ Key concepts acquired: idempotency, configuration-as-code.
 - From Wazuh Threat Intelligence, 38 authentication failures were registered.
 - Key alert: rule.id 5551, level 10, "PAM: Multiple failed logins in a small period of time" (21:44:23).
 
+## 2026-09-12
+- Analized the tcpdump PCAP with Wireshark.
+- SYN filtering: applied `tcp.flags.syn == 1 && tcp.flags.ack == 0 && ip.src == 10.10.10.30` to observe only the connection-initiating packets sent from Kali. Result: 141 attempts to open an SSH session.
+- Isolated TCP stream: applied `tcp.stream == 0` to observe the first complete SSH connection in isolation. The client protocol identified as libssh instead of OpenSSH, which translates to non-human traffic. The connection only lasted 0.38 seconds since it's establishment to its closing which further more indicates non-human traffic.
+- TCP Retransmissions: once fail2ban banned the Kali machine, the Debian machine firewall silently dropped its packets; Kali kept resending the SYNs.
+- Since the packets were dropped instead of rejected, Kali kept retransmitting them.
+
+## 2026-09-13 
+- Correlated PCAP with Wazuh server logs: expanded a rule 5503 event and inspected the log, revealing the attemped username (root) and source IP (10.10.10.30). 
+- The Wazuh log also MITTRE mapped the event with **T1110.001 / Password Guessing / Credential Access**.

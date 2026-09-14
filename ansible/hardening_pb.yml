@@ -1,0 +1,184 @@
+---
+- name: Hardening of the Debian machines
+  hosts: target
+  become: true
+
+  tasks:
+    - name: MOTD content
+      ansible.builtin.copy:
+        dest: /etc/motd
+        content: "AUTHORIZED ACCESS ONLY\n All activity may be monitored and reported, restricted access.\n RBNKO PROXMOX LAB"
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Login warning banner content
+      ansible.builtin.copy:
+        dest: /etc/issue
+        content: "AUTHORIZED ACCESS ONLY\n All activity may be monitored and reported, restricted access.\n RBNKO PROXMOX LAB"
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Remote login warning banner content
+      ansible.builtin.copy:
+        dest: /etc/issue.net 
+        content: "AUTHORIZED ACCESS ONLY\n All activity may be monitored and reported, restricted access.\n RBNKO PROXMOX LAB"
+        owner: root
+        group: root
+        mode: "0644"  
+  
+    - name: Disable SSH root login
+      ansible.builtin.lineinfile:
+         path: /etc/ssh/sshd_config
+         regexp: '^#?PermitRootLogin'
+         line: 'PermitRootLogin no'
+      notify: Restart ssh
+
+    - name: Limit SSH auth attemps
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#MaxAuthTries'
+        line: 'MaxAuthTries 3'
+      notify: Restart ssh
+
+    - name: Disable empty passwds over SSH
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?PermitEmptyPasswords'
+        line: 'PermitEmptyPasswords no'
+      notify: Restart ssh
+
+    - name: SSH client alive interval
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?ClientAliveInterval'
+        line: 'ClientAliveInterval 15'
+      notify: Restart ssh
+
+    - name: SSH client alive count max
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?ClientAliveCountMax'
+        line: 'ClientAliveCountMax 2'
+      notify: Restart ssh 
+
+    - name: SSH tcp forwarding
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?AllowTcpForwarding'
+        line: 'AllowTcpForwarding no'
+      notify: Restart ssh
+
+    - name: SSH tcp keep alive
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?TCPKeepAlive'
+        line: 'TCPKeepAlive no'
+      notify: Restart ssh
+
+    - name: SSH x11 forwarding
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?X11Forwarding'
+        line: 'X11Forwarding no'
+      notify: Restart ssh
+
+    - name: SSH max sessions
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?MaxSessions'
+        line: 'MaxSessions 2'
+      notify: Restart ssh
+
+    - name: SSH agent forwarding
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#AllowAgentForwarding'
+        line: 'AllowAgentForwarding no'
+      notify: Restart ssh
+
+    - name: SSH log level
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#LogLevel'
+        line: 'LogLevel VERBOSE'
+      notify: Restart ssh
+
+    - name: Uninstall telnet packages
+      ansible.builtin.apt:
+        name:
+          - telnet
+          - inetutils-telnet
+        state: absent
+        purge: true
+
+    - name: Install security packages
+      ansible.builtin.apt:
+        name:
+          - ufw
+          - fail2ban
+          - lynis
+          - rkhunter
+          - debsums
+          - apt-show-versions
+          - needrestart
+          - apt-listbugs
+          - libpam-tmpdir
+        state: present
+        update_cache: true
+
+    - name: SSH firewall rule
+      community.general.ufw:
+        rule: allow
+        port: '22'
+        proto: tcp
+
+    - name: Wazuh firewall rule
+      community.general.ufw:
+        rule: allow
+        port: '1514'
+        proto: tcp
+
+    - name: Enable & start ufw
+      ansible.builtin.service:
+        name: ufw
+        state: started
+        enabled: true
+
+    - name: Enable firewall
+      community.general.ufw:
+        state: enabled
+        policy: deny
+
+    - name: Unmask firewall
+      ansible.builtin.systemd:
+        name: ufw
+        masked: false
+
+    - name: Enable & start f2b
+      ansible.builtin.service:
+        name: fail2ban
+        state: started
+        enabled: true
+
+    - name: Passwd expiration
+      ansible.builtin.lineinfile:
+        path: /etc/login.defs
+        regexp: '^PASS_MAX_DAYS'
+        line: 'PASS_MAX_DAYS 90'
+
+    - name: Ignore ICMP broadcast req
+      ansible.posix.sysctl:
+        name: net.ipv4.icmp_echo_ignore_broadcasts
+        value: '1'
+        state: present
+        reload: true
+
+  handlers:
+    - name: Restart ssh
+      ansible.builtin.service:
+        name: ssh
+        state: restarted
+
+
