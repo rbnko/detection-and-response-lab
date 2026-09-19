@@ -9,6 +9,26 @@ Isolated Proxmox network (`detection-lab`), no home-LAN access (NAT only for upd
 - **wazuh** — SIEM, collects logs and raises alerts.
 - **kali** — attacker.
 
+```mermaid
+graph TB
+    subgraph LAB["🔒 Isolated network — detection-lab — 10.10.10.0/24 (no route to home LAN)"]
+        ANSIBLE["<b>ansible</b><br/>10.10.10.15<br/><i>Control node · IaC</i>"]
+        KALI["<b>kali</b><br/>10.10.10.30<br/><i>Attacker · Hydra</i>"]
+        TARGET["<b>deb-target</b><br/>10.10.10.20<br/><i>Debian 13 · hardened<br/>Wazuh agent + fail2ban</i>"]
+        WAZUH["<b>wazuh</b><br/>10.10.10.10<br/><i>SIEM · logs + alerts</i>"]
+
+        ANSIBLE -->|"hardens via SSH"| TARGET
+        KALI -->|"SSH brute-force (T1110.001)"| TARGET
+        TARGET -->|"agent forwards logs"| WAZUH
+    end
+
+    style TARGET fill:#1a3d1a,stroke:#3fb950,color:#fff
+    style KALI fill:#3d1a1a,stroke:#f85149,color:#fff
+    style WAZUH fill:#1a2a3d,stroke:#58a6ff,color:#fff
+    style ANSIBLE fill:#3d331a,stroke:#d29922,color:#fff
+    style LAB fill:#0d1117,stroke:#30363d,color:#8b949e
+```
+
 ## Hardening (Ansible)
 Target hardened with an Ansible playbook (repeatable, version-controlled):
 - SSH: no root login, `MaxAuthTries 3`, no empty passwords, no X11/TCP/agent forwarding, verbose logging.
